@@ -29,14 +29,14 @@ body{overflow-x:hidden}
 <a href="experiencias.html">Experiencias</a>
 <a href="grupales.html">Excursiones grupales</a>
 <a href="#destinations">Destinos</a>
-<a href="#tailor">A tu medida</a>
-<a href="#private">Sobre Viatsa</a>
+<a href="viajes-a-medida.html">A tu medida</a>
+
 </div>
 <div class="navright">
 <span class="lang-switch">
 <button class="lang-btn" data-lang="es">ES</button> / <button class="lang-btn" data-lang="en">EN</button>
 </span>
-<a class="navcta" href="#tailor">Diseña tu viaje</a>
+<a class="navcta" href="viajes-a-medida.html">Diseña tu viaje</a>
 <button class="mobile-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">Menú</button>
 </div>
 </nav>
@@ -45,8 +45,8 @@ body{overflow-x:hidden}
 <a href="experiencias.html">Experiencias</a>
 <a href="grupales.html">Excursiones grupales</a>
 <a href="#destinations">Destinos</a>
-<a href="#tailor">Diseña tu viaje</a>
-<a href="#private">Sobre Viatsa</a>
+<a href="viajes-a-medida.html">Diseña tu viaje</a>
+
 </div>
 </header>
 <main>
@@ -57,7 +57,7 @@ body{overflow-x:hidden}
 <p>Rutas privadas, paisajes escondidos y experiencias auténticas, diseñadas de principio a fin.</p>
 <div class="hero-actions">
 <a class="btn" href="experiencias.html">Explorar excursiones</a>
-<a class="textlink" href="#tailor">Diseña tu viaje →</a>
+<a class="textlink" href="viajes-a-medida.html">Diseña tu viaje →</a>
 </div>
 </div>
 </section>
@@ -87,7 +87,7 @@ body{overflow-x:hidden}
 <p>De la Ciudad Colonial a playas escondidas, lagunas y pueblos de la costa norte.</p>
 <div class="route">Santo Domingo · Río San Juan · Cabrera<br>Samaná · Playas escondidas</div>
 <div class="price">Desde US$1,250 / persona</div>
-<a class="textlink" href="#tailor">Conocer el viaje →</a>
+<a class="textlink" href="viajes-a-medida.html">Conocer el viaje →</a>
 </div>
 </article>
 <div class="journey-list">
@@ -97,7 +97,7 @@ body{overflow-x:hidden}
 <h3>Caribe Salvaje</h3>
 <span class="meta">Desde US$1,050 · 6 días</span>
 <p>Cascadas, manglares y una costa que todavía se siente remota.</p>
-<a class="textlink" href="#tailor">Explorar →</a>
+<a class="textlink" href="viajes-a-medida.html">Explorar →</a>
 </article>
 <article class="journey-item">
 <div class="journey-image">
@@ -105,7 +105,7 @@ body{overflow-x:hidden}
 <h3>Entre Cascadas y Palmeras</h3>
 <span class="meta">Desde US$1,100 · 6 días</span>
 <p>Una ruta por Samaná entre agua dulce, caminos verdes y playas intactas.</p>
-<a class="textlink" href="#tailor">Explorar →</a>
+<a class="textlink" href="viajes-a-medida.html">Explorar →</a>
 </article>
 <article class="journey-item">
 <div class="journey-image">
@@ -113,7 +113,7 @@ body{overflow-x:hidden}
 <h3>Perla del Sur</h3>
 <span class="meta">Desde US$1,490 · 6 días</span>
 <p>El sur profundo: ríos, costa abierta, fauna y paisajes poco transitados.</p>
-<a class="textlink" href="#tailor">Explorar →</a>
+<a class="textlink" href="viajes-a-medida.html">Explorar →</a>
 </article>
 </div>
 <div class="more-journeys">
@@ -208,7 +208,7 @@ body{overflow-x:hidden}
 </div>
 <div>
 <p>Cuéntanos qué quieres vivir y diseñaremos una ruta privada alrededor de tus días, intereses y forma de viajar.</p>
-<a class="textlink" href="#tailor">Diseñar mi viaje →</a>
+<a class="textlink" href="viajes-a-medida.html">Diseñar mi viaje →</a>
 </div>
 </div>
 </section>
@@ -227,7 +227,7 @@ body{overflow-x:hidden}
 <a href="aventuras.html">Aventuras</a>
 <a href="experiencias.html">Experiencias</a>
 <a href="grupales.html">Excursiones grupales</a>
-<a href="#tailor">A tu medida</a>
+<a href="viajes-a-medida.html">A tu medida</a>
 </div>
 <div>
 <a>Sobre Viatsa</a>
@@ -263,7 +263,7 @@ const exp=[
  ['Bayahíbe: mar, cuevas y esencia caribeña','Bayahíbe · Costa y cultura','US$115','playa cultura naturaleza','hero-v2.webp','cover']
 ];
 const list=document.querySelector('#experience-list');
-list.innerHTML=exp.map((x,i)=>`<a class="exp-row" data-category="${x[3]}" href="#tailor">
+list.innerHTML=exp.map((x,i)=>`<a class="exp-row" data-category="${x[3]}" href="viajes-a-medida.html">
 <span class="exp-index">${String(i+1).padStart(2,'0')}</span>
 <span class="exp-thumb" aria-hidden="true" style="--thumb:url('${x[4]}');--thumb-size:${x[5]}"></span>
 <span class="exp-name">${x[0]}</span>
@@ -281,5 +281,5 @@ const map={'Viajes':'#journeys','Experiencias':'#experiences','Destinos':'#desti
 </div>
 <script src="i18n.js?v=2" defer>
 </script>
-</body>
+<script src="site-common.js?v=1" defer></script></body>
 </html>
