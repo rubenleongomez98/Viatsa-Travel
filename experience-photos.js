@@ -2,9 +2,10 @@ const experiencePhotos={
   'Isla Saona':{src:'saona-strip.webp',count:4},
   'Buggies Punta Cana':{src:'buggies-strip.webp',count:4},
   'Recorrido por Río San Juan':{src:'rio-strip.webp',count:2},
-  'Recorrido por Samaná':{src:'vuelta-strip.webp',count:4},
-  'Río Partido, Salcedo':{src:'rio-strip.webp',count:2},
-  'Cascadas Vírgenes':{src:'perla-15.webp',count:1}
+  'Recorrido por Samaná':{src:'samana-strip-drive.webp',count:4},
+  'Río Partido, Salcedo':{src:'rio-partido-strip.webp',count:4},
+  'Cascadas Vírgenes':{src:'cascadas-virgenes-strip.webp',count:4},
+  'Recorrido por Santo Domingo':{src:'santo-domingo-strip.webp',count:2}
 };
 const photoStyles=document.createElement('style');
 photoStyles.textContent=`.card-carousel{height:210px;margin:-27px -27px 24px;position:relative;overflow:hidden}.carousel-track{display:flex;width:100%;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.carousel-track::-webkit-scrollbar{display:none}.photo-frame{display:block;flex:0 0 100%;width:100%;height:100%;background-image:var(--photo);background-size:calc(var(--frames)*100%) 100%;background-position:var(--pos) center;background-repeat:no-repeat;scroll-snap-align:start}.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;background:#fff;color:#29291f;font-size:25px;cursor:pointer;box-shadow:0 4px 16px #0003}.carousel-arrow.prev{left:12px}.carousel-arrow.next{right:12px}.carousel-count{position:absolute;right:12px;bottom:10px;background:#29291fcc;color:#fff;padding:5px 9px;font-size:10px}.card.has-photos h3{margin-top:12px}.trip-gallery{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin:26px 0}.trip-gallery .photo-frame{height:190px}.trip-gallery .photo-frame:first-child{grid-row:span 2;height:388px}@media(max-width:650px){.trip-gallery{grid-template-columns:1fr 1fr}.trip-gallery .photo-frame,.trip-gallery .photo-frame:first-child{height:180px;grid-row:auto}}`;
