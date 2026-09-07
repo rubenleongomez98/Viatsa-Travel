@@ -28,7 +28,7 @@ updateAdventure('Entre Cascadas y Palmeras',{2:'2 días · 1 noche',8:'US$1,270 
 updateAdventure('Vuelta a la Isla',{2:'6 días · 5 noches',8:'US$1,250 p/p',9:'Cotización y confirmación previa.'});
 const surPhotos=['perla-15.webp','perla-05.webp','perla-10.webp','perla-11.webp','perla-14.webp','perla-16.webp'];
 const vueltaPhotos={src:'vuelta-strip.webp',count:4};
-const adventurePhotos={'Sur Profundo':surPhotos,'Vuelta a la Isla':vueltaPhotos};
+const adventurePhotos={'Sur Profundo':surPhotos,'Perla del Sur':surPhotos,'Vuelta a la Isla':vueltaPhotos};
 const adventurePhotoStyle=document.createElement('style');
 adventurePhotoStyle.textContent='.photo-frame{display:block;flex:0 0 100%;width:100%;height:100%;background-image:var(--photo);background-size:calc(var(--frames)*100%) 100%;background-position:var(--pos) center;background-repeat:no-repeat;scroll-snap-align:start}.trip-gallery .photo-frame{height:190px}.trip-gallery .photo-frame:first-child{grid-row:span 2;height:388px}';
 document.head.appendChild(adventurePhotoStyle);
