@@ -25,4 +25,5 @@ openP=function(p){
   D.innerHTML=`<span class="eyebrow">${p[2]} · ${p[4]}</span><h2>${p[3]}</h2><p class="lead">${p[5]}</p><div class="trip-gallery">${Array.from({length:photos.count},(_,i)=>photoFrame(photos,p[3],i)).join('')}</div><div class="cols"><div><h4>Lugares de la ruta</h4><ul>${p[6].split('|').map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h4>Incluye</h4><ul>${p[7].split('|').map(x=>`<li>${x}</li>`).join('')}</ul></div></div><div class="note">${p[9]} Horarios, disponibilidad y condiciones se confirman al preparar la propuesta.</div><div class="foot"><strong>${p[8]}</strong><a class="wa" target="_blank" rel="noopener" href="https://wa.me/18099723232?text=${encodeURIComponent('Hola, quiero conocer más sobre '+p[3])}">Consultar por WhatsApp</a></div>`;
   M.showModal();
 };
+const compactStyles=document.createElement('link');compactStyles.rel='stylesheet';compactStyles.href='catalog-compact.css?v=1';document.head.append(compactStyles);
 draw();

@@ -58,4 +58,5 @@ openP=function(p){
   <div class="note"><strong>Reserva:</strong> ${sharedTripDetails.booking}</div><h4>Cancelación</h4><p>${sharedTripDetails.cancellation}</p>
   <div class="contact-line">WhatsApp: +1 809 972 3232 · viatsatravel@gmail.com</div><div class="foot"><strong>${p[8]}</strong><a class="wa" target="_blank" rel="noopener" href="https://wa.me/18099723232?text=${encodeURIComponent('Hola, quiero cotizar '+p[3])}">Solicitar disponibilidad</a></div>`; M.showModal();
 };
+const compactStyles=document.createElement('link');compactStyles.rel='stylesheet';compactStyles.href='catalog-compact.css?v=1';document.head.append(compactStyles);
 draw();
