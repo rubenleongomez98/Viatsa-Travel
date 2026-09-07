@@ -1,0 +1,20 @@
+{
+  "ejemplo": true,
+  "id": "ejemplo-ruta-b",
+  "nombre": { "es": "Ruta de ejemplo — Isla Completa", "en": "Sample Route — Full Island" },
+  "noches": 4,
+  "moneda": "USD",
+  "personas": { "min": 2, "max": 8 },
+  "precioBase": { "2": 1850, "3": 2200, "4": 2520, "5": 3150, "6": 3480, "7": 3850, "8": 4180 },
+  "habitaciones": [
+    { "id": "doble", "nombre": { "es": "Doble", "en": "Double" }, "capacidad": 2, "precioNoche": 72 },
+    { "id": "familiar", "nombre": { "es": "Familiar", "en": "Family" }, "capacidad": 4, "precioNoche": 118 }
+  ],
+  "salidas": [
+    { "id": "sdq", "nombre": { "es": "Santo Domingo", "en": "Santo Domingo" }, "suplemento": 0, "porPersona": false },
+    { "id": "sti", "nombre": { "es": "Santiago", "en": "Santiago" }, "suplemento": 35, "porPersona": true }
+  ],
+  "temporadas": [],
+  "fechasBloqueadas": ["2027-01-01"],
+  "contacto": { "whatsapp": "+18099723232", "urlReserva": "" }
+}

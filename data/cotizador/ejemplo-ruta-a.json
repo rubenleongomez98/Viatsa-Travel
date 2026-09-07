@@ -1,0 +1,21 @@
+{
+  "ejemplo": true,
+  "id": "ejemplo-ruta-a",
+  "nombre": { "es": "Ruta de ejemplo — Costa Sur", "en": "Sample Route — South Coast" },
+  "noches": 1,
+  "moneda": "USD",
+  "personas": { "min": 2, "max": 10 },
+  "precioBase": { "2": 900, "3": 1150, "4": 1300, "5": 1900, "6": 2100, "7": 2350, "8": 2550, "9": 2790, "10": 2990 },
+  "habitaciones": [
+    { "id": "doble", "nombre": { "es": "Doble", "en": "Double" }, "capacidad": 2, "precioNoche": 60 },
+    { "id": "triple", "nombre": { "es": "Triple", "en": "Triple" }, "capacidad": 3, "precioNoche": 80 },
+    { "id": "cuadruple", "nombre": { "es": "Cuádruple", "en": "Quadruple" }, "capacidad": 4, "precioNoche": 95 }
+  ],
+  "salidas": [
+    { "id": "sdq", "nombre": { "es": "Santo Domingo", "en": "Santo Domingo" }, "suplemento": 0, "porPersona": false },
+    { "id": "puj", "nombre": { "es": "Punta Cana", "en": "Punta Cana" }, "suplemento": 120, "porPersona": false }
+  ],
+  "temporadas": [{ "desde": "2026-12-15", "hasta": "2027-01-10", "factor": 1.15 }],
+  "fechasBloqueadas": ["2026-12-24", "2026-12-25"],
+  "contacto": { "whatsapp": "+18099723232", "urlReserva": "" }
+}
