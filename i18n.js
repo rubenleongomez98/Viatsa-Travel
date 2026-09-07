@@ -11,4 +11,20 @@ function applyLanguage(lang){
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('selected',b.dataset.lang===lang));
   localStorage.setItem('viatsa-lang',lang);
 }
-document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.lang-btn').forEach(b=>b.onclick=()=>{localStorage.setItem('viatsa-lang',b.dataset.lang);location.reload()});applyLanguage(localStorage.getItem('viatsa-lang')||'es')});
+function setupMobileNav(){
+  const header=document.querySelector('.top'),nav=header?.querySelector('nav');
+  if(!header||!nav||nav.querySelector('.mobile-toggle'))return;
+  const style=document.createElement('style');
+  style.textContent='.viatsa-mobile-toggle{display:none;border:0;background:transparent;color:inherit;padding:10px 0;font:700 11px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}.viatsa-mobile-panel{display:none}@media(max-width:850px){.top nav{gap:12px}.top nav>a:first-child{margin-right:auto}.top nav>a:first-child img{width:125px}.top .links,.top .cta{display:none}.viatsa-mobile-toggle{display:block}.viatsa-mobile-panel{position:absolute;z-index:20;top:80px;left:0;right:0;background:#606042;color:#E7E0D2;padding:24px 16px 30px;border-top:1px solid #e7e0d23d;box-shadow:0 16px 28px #20201433}.viatsa-mobile-panel.open{display:grid;gap:19px}.viatsa-mobile-panel a{font:400 27px/1.1 Georgia,serif}.viatsa-mobile-panel .mobile-cta{margin-top:8px;padding-top:20px;border-top:1px solid #e7e0d24a;font:700 12px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}}';
+  document.head.append(style);
+  const toggle=document.createElement('button');
+  toggle.className='viatsa-mobile-toggle';toggle.type='button';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','viatsa-mobile-menu');toggle.textContent='Menú';
+  const panel=document.createElement('div');
+  panel.className='viatsa-mobile-panel';panel.id='viatsa-mobile-menu';panel.innerHTML='<a href="aventuras.html">Aventuras</a><a href="experiencias.html">Experiencias</a><a href="grupales.html">Excursiones grupales</a><a href="index.html#destinations">Destinos</a><a href="index.html#private">Sobre Viatsa</a><a class="mobile-cta" href="index.html#tailor">Diseña tu viaje</a>';
+  const close=()=>{panel.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='Menú'};
+  toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')==='true';if(open)close();else{panel.classList.add('open');toggle.setAttribute('aria-expanded','true');toggle.textContent='Cerrar'}});
+  panel.querySelectorAll('a').forEach(link=>link.addEventListener('click',close));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')close()});
+  nav.append(toggle);header.append(panel);
+}
+document.addEventListener('DOMContentLoaded',()=>{setupMobileNav();document.querySelectorAll('.lang-btn').forEach(b=>b.onclick=()=>{localStorage.setItem('viatsa-lang',b.dataset.lang);location.reload()});applyLanguage(localStorage.getItem('viatsa-lang')||'es')});
