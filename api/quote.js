@@ -1,4 +1,4 @@
-const PRODUCTS={'entre-cascadas-y-palmeras':{fixed:31000,variable:4500,max:4},'vuelta-a-la-isla':{fixed:77200,variable:9100,max:4}};
+const PRODUCTS={'entre-cascadas-y-palmeras':{fixed:42200,variable:4500,max:4},'vuelta-a-la-isla':{fixed:77200,variable:9100,max:4}};
 const TRANSPORT=[{max:4,cents:13300,label:'Vehículo privado'},{max:10,cents:45200,label:'Transporte para grupo'},{max:28,cents:61400,label:'Autobús'}];
 const TENTS={double:{capacity:2,cents:8000,label:'Tienda para 2 personas'},quadruple:{capacity:4,cents:12000,label:'Tienda para 4 personas'},sextuple:{capacity:6,cents:17000,label:'Tienda para 6 personas'}};
 const BOATS=[{capacity:5,cents:6800},{capacity:10,cents:8500},{capacity:13,cents:10200}];
