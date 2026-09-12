@@ -1,17 +1,10 @@
-# Confirmaciones comerciales requeridas — Fase 1A
+# Confirmaciones comerciales requeridas
 
-1. **Vuelta a la Isla:** pendiente para definir precios fijos de venta. No se activó cálculo público automático.
-2. Confirmar el itinerario detallado, horarios y capacidad máxima de las tres aventuras antes de habilitar reservas automáticas.
-3. Confirmar qué experiencias de un día deben tener página individual y pago directo cuando se implemente el cotizador.
-4. Los productos archivados no deben tener una URL pública ni aparecer en la navegación.
-5. Canales oficiales confirmados: `viatsatravel@gmail.com` y WhatsApp `+1 809 972 3232`.
-
-No se inventaron respuestas para estos puntos.
-
-## Fase 1B — costes operativos
-
-6. Capacidad confirmada del vehículo propio de Perla del Sur: 1–3 viajeros.
-7. Alojamiento de Perla del Sur: selección de cantidades de carpas de 2, 4 y 6 personas, permitiendo plazas sobrantes. Tarifas confirmadas en documentación interna. No sustituir la selección del cliente por una combinación más económica.
-8. Entre Cascadas: transporte confirmado desde Santo Domingo hasta 13 viajeros y alojamiento por habitaciones dobles confirmado para todo ese rango. Pendiente tasa de compra bancaria vigente. Vuelta a la Isla: transporte desde 5 viajeros pendiente; alojamiento por habitaciones dobles confirmado.
-9. Recargo interno sobre gastos y depósito del 50% confirmados; saldo hasta tres días antes y aprobación de disponibilidad antes de cobrar. Impuestos y reservas con menor antelación siguen pendientes. No se han activado cobros.
-10. Por ahora solo se calculan rutas desde Santo Domingo. Otras recogidas y sus tarifas quedan pendientes. La conversión usa exclusivamente la tasa de compra USD del Banco Popular validada; no hay conexión bancaria automática.
+1. Configurar las tarifas de venta, margen y depósito de cada aventura. El motor actual calcula únicamente costes internos verificados y nunca los expone al cliente.
+2. Resolver el conflicto entre el depósito del 50 % y las condiciones de reembolso/cancelación antes de automatizar cobros o incorporar la política al motor. El porcentaje de depósito debe ser configurable; la lógica de reembolsos no está codificada.
+3. Confirmar la capacidad del vehículo propio de Perla del Sur. Mientras no se confirme, esa opción requiere cotización.
+4. Confirmar alojamiento de Perla del Sur para 7 o más viajeros y actividades para 16 o más viajeros.
+5. Confirmar transporte para 5 o más viajeros en Entre Cascadas y Palmeras y Vuelta a la Isla.
+6. Confirmar suplementos de recogida fuera de Santo Domingo y cualquier extra antes de calcularlos.
+7. Confirmar itinerario detallado, horarios y capacidad máxima antes de habilitar reservas automáticas.
+8. Los canales oficiales confirmados son `viatsatravel@gmail.com` y WhatsApp `+1 809 972 3232`.
