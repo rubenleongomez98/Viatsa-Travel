@@ -13,8 +13,12 @@
   const photo=(src,alt,cls='',lazy=true,frame=0)=>{
     if(!src)return '';
     const frames=window.VIATSA_CATALOG.mediaFrames?.[src]||1;
-    return `<span class="v-photo ${frames>1?'strip ':''}${cls}" data-frames="${frames}"><img src="/${esc(src)}" alt="${esc(alt)}" ${lazy?'loading="lazy"':'fetchpriority="high"'} ${frames>1?`style="left:-${frame*100}%"`:''}></span>`;
+    return `<span class="v-photo ${frames>1?'strip ':''}${cls}" data-frames="${frames}" style="--photo-frame:${frame};--frame-total:${frames}"><img src="/${esc(src)}" alt="${esc(alt)}" ${lazy?'loading="lazy"':'fetchpriority="high"'}></span>`;
   };
+  // Crop each source frame without stretching the photographed people or landscape.
+  const sizePhoto=img=>{const frame=img?.closest?.('.v-photo.strip');if(frame&&img.naturalHeight)frame.style.setProperty('--frame-ratio',img.naturalWidth/(Number(frame.dataset.frames)*img.naturalHeight))};
+  document.addEventListener('load',event=>sizePhoto(event.target),true);
+  document.addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.v-photo.strip img').forEach(sizePhoto));
   const priceLabel=p=>p.type==='adventure'?t('Precio a consultar','Price on request'):(p.pricingConfig?.display||t('Consultar','Enquire'));
   const routeRow=(p,i=0)=>`<article class="v-route"><a class="v-route-photo" href="${route(p)}" aria-label="${esc(name(p))}">${photo(p.heroImage,name(p))}</a><div><span class="v-kicker">0${i+1} / ${regions[p.region]||p.region}</span><div class="v-meta">${duration(p)} · ${t('Viaje privado','Private trip')}</div><h2><a href="${route(p)}" style="text-decoration:none">${esc(name(p))}</a></h2><p>${esc(description(p))}</p><p class="v-route-places">${p.destinations.slice(0,4).map(esc).join(' · ')}</p><div class="v-price">${priceLabel(p)}</div><a class="v-link" href="${route(p)}">${t('Conocer la ruta','Explore the route')} <span aria-hidden="true">↗</span></a></div></article>`;
   function shell(){

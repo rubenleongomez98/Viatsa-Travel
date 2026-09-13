@@ -1,5 +1,215 @@
-(()=>{'use strict';const p=VIATSA_CATALOG.bySlug(document.body.dataset.product);if(!p||p.type!=='adventure')return;const t=VIATSA_UI.t,box=document.querySelector('#booking'),perla=p.id==='perla-del-sur',money=n=>'US$ '+Math.round(n/100).toLocaleString(),counts={double:0,quadruple:0,sextuple:0};const row=(id,n,c)=>`<div class="qc-option"><div><strong>${n}</strong><small>${t('Capacidad','Capacity')}: ${c}</small></div><div class="qc-counter"><button type="button" data-tent="${id}" data-d="-1">−</button><output data-count="${id}">0</output><button type="button" data-tent="${id}" data-d="1">+</button></div></div>`;
-box.innerHTML=`<span class="v-kicker">${t('Configura tu viaje','Build your trip')}</span><h2>${VIATSA_UI.name(p)}</h2><form id="qc-form"><div class="qc-progress"><span class="active">1</span><span>2</span><span>3</span><span>4</span></div><section class="qc-step"><h3>1. ${t('Tu grupo','Your group')}</h3><label for="qc-n">${t('Número de viajeros','Travelers')}</label><div class="v-stepper"><button type="button" data-n="-1">−</button><input id="qc-n" type="number" min="1" value="${Math.max(1,p.minimumGuests||1)}"><button type="button" data-n="1">+</button></div></section><section class="qc-step"><h3>2. ${t('Transporte','Transport')}</h3><strong>${t('Salida desde Santo Domingo','Departure from Santo Domingo')}</strong><p id="qc-transport"></p></section>${perla?`<section class="qc-step"><h3>3. ${t('Hospedaje','Accommodation')}</h3>${row('double',t('Tienda para 2 personas','Tent for 2'),2)}${row('quadruple',t('Tienda para 4 personas','Tent for 4'),4)}${row('sextuple',t('Tienda para 6 personas','Tent for 6'),6)}<p id="qc-capacity"></p></section>`:''}<section class="qc-step"><h3>${perla?'4':'3'}. ${t('Fecha preferida','Preferred date')}</h3><input id="qc-date" type="date" required><p class="v-small">${t('La disponibilidad será confirmada por nuestro equipo.','Availability will be confirmed by our team.')}</p></section><div id="qc-result" class="v-quote-state" aria-live="polite"></div><p id="qc-error" class="v-form-error" role="alert"></p><button class="v-button" type="submit">${t('Solicitar reserva','Request booking')} ↗</button><a id="qc-wa" class="v-link" target="_blank" rel="noopener">${t('Consultar por WhatsApp','Ask on WhatsApp')} ↗</a></form>`;
-const f=box.querySelector('form'),n=f.querySelector('#qc-n'),date=f.querySelector('#qc-date');date.min=new Date().toISOString().slice(0,10);let last;function recommend(x){counts.double=counts.quadruple=counts.sextuple=0;while(x>0){if(x>4){counts.sextuple++;x-=6}else if(x>2){counts.quadruple++;x-=4}else{counts.double++;x-=2}}}const transport=x=>x<=4?t('Vehículo privado','Private vehicle'):x<=10?t('Transporte para grupo','Group transport'):x<=28?t('Autobús','Bus'):t('Cotización personalizada','Custom quote');
-async function update(){const travelers=Number(n.value);f.querySelector('#qc-transport').textContent=transport(travelers);if(perla){const cap=counts.double*2+counts.quadruple*4+counts.sextuple*6;f.querySelectorAll('[data-count]').forEach(o=>o.textContent=counts[o.dataset.count]);f.querySelector('#qc-capacity').textContent=`${cap} ${t('plazas para','places for')} ${travelers} ${t('viajeros','travelers')}`}try{last=await(await fetch('/api/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId:p.id,travelers,date:date.value,accommodation:counts})})).json()}catch{last={status:'unavailable',message:t('No pudimos calcular ahora. Escríbenos por WhatsApp.','Unable to calculate now. Contact us on WhatsApp.')}}const r=f.querySelector('#qc-result'),wa=f.querySelector('#qc-wa');if(last.status==='calculated'){r.innerHTML=`<strong>${t('Tu viaje','Your trip')}</strong><span>${last.travelers} ${t('viajeros','travelers')} · ${last.transport}</span><span>${last.activity||''}</span><b>${t('Precio total','Total')}: ${money(last.retailPrice)}</b><span>${t('Para confirmar','Deposit')}: ${money(last.deposit)}</span><span>${t('Saldo restante','Balance')}: ${money(last.remainingBalance)}</span>`;const beds=last.accommodation.map(x=>x.quantity+' × '+x.label).join('\n')||t('Incluido','Included');wa.href='https://wa.me/18099723232?text='+encodeURIComponent(`Hola, quiero solicitar disponibilidad para ${VIATSA_UI.name(p)}.\nViajeros: ${last.travelers}\nSalida: Santo Domingo\nTransporte: ${last.transport}\nHospedaje:\n${beds}\nFecha preferida: ${last.date||'Por confirmar'}\nPrecio cotizado: ${money(last.retailPrice)}\nDepósito: ${money(last.deposit)}\nSaldo pendiente: ${money(last.remainingBalance)}\nQuisiera confirmar disponibilidad.`)}else{r.innerHTML=`<strong>${t('Cotización pendiente','Quote pending')}</strong><span>${last.message}</span>`;wa.href='https://wa.me/18099723232'}}
-if(perla)recommend(Number(n.value));f.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{n.value=Math.max(1,Number(n.value)+Number(b.dataset.n));if(perla)recommend(Number(n.value));update()});f.querySelectorAll('[data-tent]').forEach(b=>b.onclick=()=>{counts[b.dataset.tent]=Math.max(0,counts[b.dataset.tent]+Number(b.dataset.d));update()});n.onchange=()=>{if(perla)recommend(Number(n.value));update()};date.onchange=update;f.onsubmit=e=>{e.preventDefault();if(!date.value){f.querySelector('#qc-error').textContent=t('Selecciona una fecha preferida.','Choose a preferred date.');return date.focus()}if(last?.status==='calculated')location.href=f.querySelector('#qc-wa').href;else f.querySelector('#qc-error').textContent=last?.message||t('Completa la configuración.','Complete the configuration.')};update()})();
+/* Presentation only. All prices and transport/boat allocations come from /api/quote. */
+(() => {
+  'use strict';
+  const p = VIATSA_CATALOG.bySlug(document.body.dataset.product);
+  const box = document.querySelector('#booking');
+  if (!p || p.type !== 'adventure' || !box) return;
+  const { t, esc, name, lang } = VIATSA_UI;
+  const perla = p.id === 'perla-del-sur';
+  const tents = [
+    { id: 'double', capacity: 2, label: t('Carpa doble', 'Double tent') },
+    { id: 'quadruple', capacity: 4, label: t('Carpa cuádruple', 'Quadruple tent') },
+    { id: 'sextuple', capacity: 6, label: t('Carpa séxtuple', 'Six-person tent') }
+  ];
+  const counts = { double: 0, quadruple: 0, sextuple: 0 };
+  const money = cents => 'US$ ' + (cents / 100).toLocaleString('en-US', {
+    minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2
+  });
+  const dateLabel = value => value
+    ? new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'es-DO', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value + 'T12:00:00'))
+    : t('Por confirmar', 'To be confirmed');
+  const row = o => '<div class="qc-option"><div><strong>' + o.label + '</strong><small>' +
+    o.capacity + ' ' + t('personas por carpa', 'people per tent') + '</small></div><div class="qc-counter">' +
+    '<button type="button" data-tent="' + o.id + '" data-d="-1" aria-label="' + t('Quitar ', 'Remove ') + o.label + '">−</button>' +
+    '<output data-count="' + o.id + '" aria-label="' + o.label + '">0</output>' +
+    '<button type="button" data-tent="' + o.id + '" data-d="1" aria-label="' + t('Añadir ', 'Add ') + o.label + '">+</button></div></div>';
+  box.innerHTML = '<span class="v-kicker">' + esc(name(p)) + '</span><h2 id="booking-heading">' +
+    t('Configura tu viaje', 'Make this trip yours') + '</h2><p class="qc-intro">' +
+    t('A tu ritmo, con tu gente. Empezamos por aquí.', 'Your pace, your people. Let’s start here.') +
+    '</p><form id="qc-form"><section class="qc-step"><label for="qc-n">' +
+    t('¿Cuántos viajáis?', 'How many are travelling?') + '</label><div class="v-stepper">' +
+    '<button type="button" data-n="-1" aria-label="' + t('Quitar un viajero', 'Remove a traveler') + '">−</button>' +
+    '<input id="qc-n" name="travelers" type="number" inputmode="numeric" min="1" step="1" required value="' +
+    Math.max(1, p.minimumGuests || 1) + '" aria-describedby="qc-error">' +
+    '<button type="button" data-n="1" aria-label="' + t('Añadir un viajero', 'Add a traveler') + '">+</button></div></section>' +
+    '<section class="qc-step qc-journey"><h3>' + t('Desde Santo Domingo', 'From Santo Domingo') + '</h3>' +
+    '<p id="qc-transport">' + t('Transporte según tu grupo', 'Transport for your group') + '</p></section>' +
+    (perla ? '<details class="qc-lodging" open><summary>' + t('Vuestras carpas', 'Your tents') +
+    '</summary><p class="qc-note">' + t('Proponemos una distribución. Puedes ajustarla a vuestro gusto.', 'We suggest a layout. Adjust it to suit your group.') +
+    '</p>' + tents.map(row).join('') + '<p id="qc-capacity" role="status"></p></details>' : '') +
+    '<p id="qc-activity" class="qc-note" hidden></p><section class="qc-step"><label for="qc-date">' +
+    t('¿Cuándo os gustaría salir?', 'When would you like to leave?') + '</label><input id="qc-date" name="date" type="date" aria-describedby="qc-date-note">' +
+    '<p id="qc-date-note" class="qc-note">' + t('Fecha preferida. Confirmaremos disponibilidad antes de reservar.', 'Preferred date. We confirm availability before booking.') +
+    '</p></section><div id="qc-result" class="qc-result" aria-live="polite" aria-atomic="true"></div>' +
+    '<p id="qc-error" class="v-form-error" role="alert"></p><button id="qc-submit" class="v-button" type="submit">' +
+    t('Solicitar disponibilidad', 'Request availability') + ' ↗</button><a id="qc-wa" class="v-link" target="_blank" rel="noopener">' +
+    t('Hablar con VIATSA', 'Talk to VIATSA') + ' ↗</a><p class="qc-note qc-reassurance">' +
+    t('Esta solicitud no realiza ningún cobro ni confirma una reserva.', 'This request does not charge you or confirm a booking.') + '</p></form>';
+
+  const f = box.querySelector('form'), n = f.elements.travelers, date = f.elements.date;
+  const result = f.querySelector('#qc-result'), error = f.querySelector('#qc-error');
+  const action = f.querySelector('#qc-submit'), wa = f.querySelector('#qc-wa');
+  const now = new Date();
+  date.min = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('-');
+  let last = null, sequence = 0, controller, pending = false;
+  const validCount = () => Number.isSafeInteger(Number(n.value)) && Number(n.value) >= 1;
+  const state = () => ({ productId: p.id, travelers: Number(n.value), date: date.value, accommodation: { ...counts } });
+  // Preserve the existing suggested distribution; prices are never calculated here.
+  function recommend(x) {
+    counts.double = counts.quadruple = counts.sextuple = 0;
+    if (!Number.isSafeInteger(x) || x < 1 || x > 28) return;
+    while (x > 0) {
+      if (x > 4) { counts.sextuple++; x -= 6; }
+      else if (x > 2) { counts.quadruple++; x -= 4; }
+      else { counts.double++; x -= 2; }
+    }
+  }
+  const transportLabel = value => ({
+    'Vehículo privado': t('Vehículo privado', 'Private vehicle'),
+    'Transporte para grupo': t('Transporte para grupo', 'Group transport'),
+    'Autobús': t('Autobús', 'Bus')
+  })[value] || t('Por confirmar con nuestro equipo', 'To be confirmed with our team');
+  const bedsLabel = () => tents.filter(o => counts[o.id]).map(o => counts[o.id] + ' × ' + o.label).join(', ') ||
+    t('Por confirmar', 'To be confirmed');
+  function contactLink(quote) {
+    const lines = [
+      t('Hola, quisiera consultar disponibilidad para ', 'Hello, I would like to check availability for ') + name(p) + '.',
+      t('Viajeros: ', 'Travelers: ') + (validCount() ? n.value : t('Por confirmar', 'To be confirmed')),
+      t('Salida: Santo Domingo', 'Departure: Santo Domingo'),
+      t('Fecha preferida: ', 'Preferred date: ') + dateLabel(date.value)
+    ];
+    if (perla) lines.push(t('Hospedaje: ', 'Accommodation: ') + bedsLabel());
+    if (quote) {
+      lines.push(t('Transporte: ', 'Transport: ') + transportLabel(quote.transport));
+      if (quote.activity) lines.push(activityLabel(quote.activity));
+      lines.push(t('Total cotizado: ', 'Quoted total: ') + money(quote.retailPrice),
+        t('Depósito: ', 'Deposit: ') + money(quote.deposit),
+        t('Saldo: ', 'Balance: ') + money(quote.remainingBalance));
+    }
+    const phone = VIATSA_CATALOG.contact.whatsapp.replace(/\D/g, '');
+    wa.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(lines.join('\n'));
+  }
+  function activityLabel(value) {
+    const number = /:\s*(\d+)$/.exec(value);
+    return number ? t('Botes para vuestro grupo: ', 'Boats for your group: ') + number[1] : '';
+  }
+  function updateCounters() {
+    f.querySelector('[data-n="-1"]').disabled = !validCount() || Number(n.value) <= 1;
+    if (!perla) return;
+    f.querySelectorAll('[data-count]').forEach(el => { el.textContent = counts[el.dataset.count]; });
+    f.querySelectorAll('[data-tent][data-d="-1"]').forEach(el => { el.disabled = counts[el.dataset.tent] === 0; });
+    const cap = tents.reduce((sum, o) => sum + counts[o.id] * o.capacity, 0);
+    const missing = Math.max(0, Number(n.value) - cap);
+    const capacity = f.querySelector('#qc-capacity');
+    capacity.classList.toggle('qc-capacity-short', validCount() && missing > 0);
+    capacity.textContent = !validCount() ? '' : missing
+      ? t('Te faltan plazas para ', 'You need places for ') + missing + t(' personas.', ' more people.')
+      : cap + t(' plazas para ', ' places for ') + n.value + t(' personas.', ' people.');
+  }
+  function bottom(label) {
+    const price = document.querySelector('.v-bottom b');
+    if (price) price.textContent = label;
+  }
+  function render(response) {
+    last = response;
+    const calculated = response.status === 'calculated';
+    f.querySelector('#qc-transport').textContent = calculated ? transportLabel(response.transport) :
+      t('Por confirmar con nuestro equipo', 'To be confirmed with our team');
+    const activity = f.querySelector('#qc-activity');
+    activity.textContent = calculated && response.activity ? activityLabel(response.activity) : '';
+    activity.hidden = !activity.textContent;
+    if (calculated) {
+      result.innerHTML = '<span class="qc-caption">' + t('Vuestro viaje privado', 'Your private journey') +
+        '</span><div class="qc-total"><span>' + t('Total del grupo', 'Group total') + '</span><strong>' +
+        money(response.retailPrice) + '</strong></div><dl><div><dt>' + t('Depósito', 'Deposit') +
+        '</dt><dd>' + money(response.deposit) + '</dd></div><div><dt>' + t('Saldo restante', 'Remaining balance') +
+        '</dt><dd>' + money(response.remainingBalance) + '</dd></div></dl>';
+      if (date.value) result.innerHTML += '<p class="qc-note">' + esc(dateLabel(date.value)) + ' · ' +
+        t('Fecha por confirmar', 'Date to be confirmed') + '</p>';
+      bottom(money(response.retailPrice));
+    } else {
+      const message = response.status === 'incomplete'
+        ? t('Ajusta las carpas para que todos tengáis una plaza.', 'Adjust the tents so everyone has a place.')
+        : response.status === 'quote_required'
+          ? t('Este tamaño de grupo requiere una propuesta personalizada. Conservaremos los detalles que has elegido.', 'This group size needs a personalised proposal. We will keep your selected details.')
+          : t('Ahora no podemos calcular el precio. Nuestro equipo puede preparar tu propuesta.', 'We cannot calculate a price right now. Our team can prepare your proposal.');
+      result.innerHTML = '<strong>' + t('Hablemos de vuestro viaje', 'Let’s talk about your trip') + '</strong><p>' + message + '</p>';
+      bottom(t('Precio a consultar', 'Price on request'));
+    }
+    action.textContent = calculated ? t('Solicitar disponibilidad ↗', 'Request availability ↗') : t('Solicitar cotización ↗', 'Request a quote ↗');
+    contactLink(calculated ? response : null);
+  }
+  async function update() {
+    const request = ++sequence;
+    controller?.abort();
+    last = null; pending = false; action.disabled = true;
+    updateCounters(); contactLink(null);
+    error.textContent = '';
+    if (!validCount() || (date.value && date.value < date.min)) {
+      result.setAttribute('aria-busy', 'false');
+      result.classList.remove('is-updating');
+      error.textContent = !validCount() ? t('Indica una cantidad entera de viajeros, desde 1.', 'Enter a whole number of travelers, starting at 1.') :
+        t('Elige una fecha de hoy en adelante.', 'Choose today or a future date.');
+      result.innerHTML = '';
+      bottom(t('Revisa tu selección', 'Check your selection'));
+      return;
+    }
+    pending = true;
+    result.setAttribute('aria-busy', 'true');
+    result.querySelector('.qc-updating')?.remove();
+    result.insertAdjacentHTML('afterbegin', '<p class="qc-updating">' + t('Actualizando tu propuesta…', 'Updating your proposal…') + '</p>');
+    result.classList.add('is-updating');
+    bottom(t('Actualizando…', 'Updating…'));
+    const snapshot = state();
+    controller = new AbortController();
+    const currentController = controller;
+    const timer = setTimeout(() => currentController.abort(), 12000);
+    let response;
+    try {
+      const res = await fetch('/api/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(snapshot), signal: currentController.signal });
+      if (!res.ok) throw new Error('quote unavailable');
+      response = await res.json();
+      if (response.status === 'calculated' && (!['retailPrice', 'deposit', 'remainingBalance'].every(k => Number.isSafeInteger(response[k]) && response[k] >= 0) ||
+          response.deposit + response.remainingBalance !== response.retailPrice || response.travelers !== snapshot.travelers)) throw new Error('invalid quote');
+    } catch { response = { status: 'unavailable' }; }
+    finally { clearTimeout(timer); }
+    if (request !== sequence) return;
+    pending = false;
+    result.classList.remove('is-updating');
+    result.setAttribute('aria-busy', 'false');
+    render(response);
+    action.disabled = response.status === 'incomplete';
+  }
+  if (perla) recommend(Number(n.value));
+  f.querySelectorAll('[data-n]').forEach(b => b.onclick = () => {
+    const next = Number(n.value) + Number(b.dataset.n);
+    n.value = Math.max(1, Number.isSafeInteger(next) ? next : 1);
+    if (perla) recommend(Number(n.value));
+    update();
+  });
+  f.querySelectorAll('[data-tent]').forEach(b => b.onclick = () => {
+    counts[b.dataset.tent] = Math.max(0, counts[b.dataset.tent] + Number(b.dataset.d));
+    update();
+  });
+  n.addEventListener('input', () => { if (perla) recommend(Number(n.value)); update(); });
+  date.addEventListener('input', update);
+  f.onsubmit = e => {
+    e.preventDefault();
+    if (pending || !validCount() || !f.reportValidity()) return;
+    if (last?.status === 'calculated' && !date.value) {
+      error.textContent = t('Elige una fecha preferida para solicitar disponibilidad.', 'Choose a preferred date to request availability.');
+      date.focus(); return;
+    }
+    if (last?.status === 'incomplete') return;
+    location.href = wa.href;
+  };
+  const mobile = document.querySelector('#mobile-plan');
+  if (mobile) mobile.onclick = () => {
+    box.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    n.focus({ preventScroll: true });
+  };
+  if ('ResizeObserver' in window) new ResizeObserver(() => {
+    box.style.setProperty('--booking-height', box.offsetHeight + 'px');
+  }).observe(box);
+  update();
+})();

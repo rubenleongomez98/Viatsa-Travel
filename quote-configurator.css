@@ -1,1 +1,35 @@
-.qc-progress{display:flex;gap:8px;margin:18px 0}.qc-progress span{display:grid;place-items:center;width:30px;height:30px;border:1px solid #606042;border-radius:50%;font-size:12px}.qc-progress .active{background:#606042;color:#fff}.qc-step{padding:18px 0;border-top:1px solid #60604238}.qc-step h3{font:600 17px Georgia,serif;margin:0 0 12px}.qc-option{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #60604224}.qc-option small{display:block}.qc-counter{display:flex;align-items:center;gap:9px}.qc-counter button{width:44px;height:44px;border:1px solid #606042;background:#fff8ed}.qc-counter output{min-width:20px;text-align:center}.v-quote-state span,.v-quote-state b{display:block;margin-top:7px}#qc-whatsapp{display:block;margin-top:15px}
+/* A quiet, single-column conversation; the server owns every price. */
+.v-booking{scroll-margin-top:24px;top:min(24px,calc(100dvh - var(--booking-height,700px) - 24px));padding:28px;border-top-width:1px}
+.v-booking #booking-heading{font-size:34px;line-height:1.08;margin:0 0 12px;text-wrap:balance}
+.v-booking>.v-kicker{margin-bottom:12px;font-size:10px}
+.qc-intro,.qc-note{font-size:13px;line-height:1.55;color:#606042;margin:10px 0 0}
+.qc-intro{margin:0 0 24px}
+.qc-step{padding:19px 0;border-top:1px solid #60604238}
+.qc-step h3,.qc-step>label,.qc-lodging>summary{display:block;font:400 21px/1.3 Georgia,serif;margin:0 0 12px;color:var(--ink)}
+.qc-journey p{font-size:14px;margin:0}
+.qc-lodging{border-top:1px solid #60604238;padding:14px 0}
+.v-booking .qc-lodging>summary{display:list-item;cursor:pointer;min-height:44px;line-height:1.3;margin:0;padding:8px 0;font-size:21px}
+.qc-option{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid #60604224}
+.qc-option strong{font-size:14px;font-weight:500}.qc-option small{display:block;font-size:12px;color:var(--olive);margin-top:3px}
+.qc-counter{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.qc-counter button{width:44px;height:44px;border:0;border-bottom:1px solid #60604270;background:transparent;color:var(--ink);font-size:20px;cursor:pointer}
+.qc-counter output{min-width:22px;text-align:center;font-size:16px;font-variant-numeric:tabular-nums}
+#qc-form button:disabled{opacity:.45;cursor:default}
+#qc-form .v-stepper{border-color:#60604265;margin-top:6px;height:50px}
+#qc-form .v-stepper input{width:100%;min-width:0;font-size:18px;background:transparent}
+#qc-form .v-stepper button{background:transparent;font-size:23px}
+#qc-form input[type=date]{box-sizing:border-box;width:100%;min-width:0;min-height:50px;padding:12px;border:1px solid #60604265;border-radius:0;background:transparent;color:var(--ink);font:16px Arial,sans-serif}
+#qc-capacity{font-size:13px;line-height:1.5;margin:12px 0 0;color:var(--olive)}
+#qc-capacity.qc-capacity-short{color:#a43d33}
+.qc-result{border-top:1px solid var(--olive);padding:22px 0 8px;font-size:14px}
+.qc-result>strong{display:block;font:27px/1.15 Georgia,serif}.qc-result p{line-height:1.55}
+.qc-caption{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--olive)}
+.qc-total{display:flex;flex-direction:column;gap:5px;margin:12px 0 20px;font-size:13px}
+.qc-total strong{font:400 34px/1.1 Georgia,serif;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.qc-result dl{margin:0}.qc-result dl>div{display:flex;justify-content:space-between;gap:12px;margin:8px 0}.qc-result dd{margin:0;white-space:nowrap;font-variant-numeric:tabular-nums}
+.qc-updating{font-size:13px;color:var(--olive);margin:0 0 12px}.qc-result.is-updating>*:not(.qc-updating){opacity:.45}
+#qc-wa{display:table;margin:12px auto 0;font-size:13px;min-height:44px}
+.qc-reassurance{text-align:center;font-size:12px;margin-top:16px}
+#qc-error:empty{display:none}#qc-submit{width:100%;min-height:48px}
+#qc-form :focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+@media(max-width:850px){.v-booking{padding:24px 20px;top:auto}.v-booking #booking-heading{font-size:32px}.qc-step{padding:18px 0}.v-bottom{padding-bottom:max(12px,env(safe-area-inset-bottom))}.v-bottom .v-button{font-size:12px;padding:12px}.v-bottom b{font-size:15px}}
