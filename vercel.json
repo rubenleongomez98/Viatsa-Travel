@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/aventuras", "destination": "/aventuras.html" },
+    { "source": "/experiencias", "destination": "/experiencias.html" },
+    { "source": "/viajes-a-medida", "destination": "/viajes-a-medida.html" },
+    { "source": "/aventuras/perla-del-sur", "destination": "/aventuras/perla-del-sur/index.html" },
+    { "source": "/aventuras/vuelta-a-la-isla", "destination": "/aventuras/vuelta-a-la-isla/index.html" },
+    { "source": "/aventuras/entre-cascadas-y-palmeras", "destination": "/aventuras/entre-cascadas-y-palmeras/index.html" }
+  ]
+}
