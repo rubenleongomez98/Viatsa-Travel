@@ -26,25 +26,25 @@
   box.innerHTML = '<span class="v-kicker">' + esc(name(p)) + '</span><h2 id="booking-heading">' +
     t('Configura tu viaje', 'Make this trip yours') + '</h2><p class="qc-intro">' +
     t('A tu ritmo, con tu gente. Empezamos por aquí.', 'Your pace, your people. Let’s start here.') +
-    '</p><form id="qc-form"><section class="qc-step"><label for="qc-n">' +
+    '</p><form id="qc-form"><div class="qc-fields"><section class="qc-step"><label for="qc-n">' +
     t('¿Cuántos viajáis?', 'How many are travelling?') + '</label><div class="v-stepper">' +
     '<button type="button" data-n="-1" aria-label="' + t('Quitar un viajero', 'Remove a traveler') + '">−</button>' +
     '<input id="qc-n" name="travelers" type="number" inputmode="numeric" min="1" step="1" required value="' +
     Math.max(1, p.minimumGuests || 1) + '" aria-describedby="qc-error">' +
     '<button type="button" data-n="1" aria-label="' + t('Añadir un viajero', 'Add a traveler') + '">+</button></div></section>' +
-    '<section class="qc-step qc-journey"><h3>' + t('Desde Santo Domingo', 'From Santo Domingo') + '</h3>' +
+    '<section class="qc-step qc-journey"><h3>' + t('Salida desde Santo Domingo', 'Departure from Santo Domingo') + '</h3>' +
     '<p id="qc-transport">' + t('Transporte según tu grupo', 'Transport for your group') + '</p></section>' +
     (perla ? '<details class="qc-lodging" open><summary>' + t('Vuestras carpas', 'Your tents') +
     '</summary><p class="qc-note">' + t('Proponemos una distribución. Puedes ajustarla a vuestro gusto.', 'We suggest a layout. Adjust it to suit your group.') +
     '</p>' + tents.map(row).join('') + '<p id="qc-capacity" role="status"></p></details>' : '') +
     '<p id="qc-activity" class="qc-note" hidden></p><section class="qc-step"><label for="qc-date">' +
-    t('¿Cuándo os gustaría salir?', 'When would you like to leave?') + '</label><input id="qc-date" name="date" type="date" aria-describedby="qc-date-note">' +
+    t('Fecha preferida', 'Preferred date') + '</label><input id="qc-date" name="date" type="date" aria-describedby="qc-date-note qc-error">' +
     '<p id="qc-date-note" class="qc-note">' + t('Fecha preferida. Confirmaremos disponibilidad antes de reservar.', 'Preferred date. We confirm availability before booking.') +
-    '</p></section><div id="qc-result" class="qc-result" aria-live="polite" aria-atomic="true"></div>' +
+    '</p></section></div><aside class="qc-summary" aria-labelledby="qc-summary-heading"><h3 id="qc-summary-heading">' + t('Tu viaje, a tu manera', 'Your journey, your way') + '</h3><dl id="qc-selection" class="qc-selection"></dl><div id="qc-result" class="qc-result" aria-live="polite" aria-atomic="true"></div>' +
     '<p id="qc-error" class="v-form-error" role="alert"></p><button id="qc-submit" class="v-button" type="submit">' +
-    t('Solicitar disponibilidad', 'Request availability') + ' ↗</button><a id="qc-wa" class="v-link" target="_blank" rel="noopener">' +
-    t('Hablar con VIATSA', 'Talk to VIATSA') + ' ↗</a><p class="qc-note qc-reassurance">' +
-    t('Esta solicitud no realiza ningún cobro ni confirma una reserva.', 'This request does not charge you or confirm a booking.') + '</p></form>';
+    t('Solicitar reserva', 'Request reservation') + ' ↗</button><a id="qc-wa" class="v-link" target="_blank" rel="noopener">' +
+    t('Consultar por WhatsApp', 'Ask via WhatsApp') + ' ↗</a><p class="qc-note qc-reassurance">' +
+    t('Esta solicitud no realiza ningún cobro ni confirma una reserva.', 'This request does not charge you or confirm a booking.') + '</p></aside></form>';
 
   const f = box.querySelector('form'), n = f.elements.travelers, date = f.elements.date;
   const result = f.querySelector('#qc-result'), error = f.querySelector('#qc-error');
@@ -75,6 +75,7 @@
     const lines = [
       t('Hola, quisiera consultar disponibilidad para ', 'Hello, I would like to check availability for ') + name(p) + '.',
       t('Viajeros: ', 'Travelers: ') + (validCount() ? n.value : t('Por confirmar', 'To be confirmed')),
+      t('Duración: ', 'Duration: ') + VIATSA_UI.duration(p),
       t('Salida: Santo Domingo', 'Departure: Santo Domingo'),
       t('Fecha preferida: ', 'Preferred date: ') + dateLabel(date.value)
     ];
@@ -85,13 +86,24 @@
       lines.push(t('Total cotizado: ', 'Quoted total: ') + money(quote.retailPrice),
         t('Depósito: ', 'Deposit: ') + money(quote.deposit),
         t('Saldo: ', 'Balance: ') + money(quote.remainingBalance));
+      if (quote.balanceDueDate) lines.push(t('Pago del saldo hasta: ', 'Balance due by: ') + dateLabel(quote.balanceDueDate));
     }
     const phone = VIATSA_CATALOG.contact.whatsapp.replace(/\D/g, '');
     wa.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(lines.join('\n'));
   }
   function activityLabel(value) {
-    const number = /:\s*(\d+)$/.exec(value);
-    return number ? t('Botes para vuestro grupo: ', 'Boats for your group: ') + number[1] : '';
+    return value ? t('Embarcaciones organizadas para tu grupo.', 'Boats arranged for your group.') : '';
+  }
+  function selectionSummary() {
+    const values = [
+      [t('Aventura', 'Adventure'), name(p)],
+      [t('Duración', 'Duration'), VIATSA_UI.duration(p)],
+      [t('Viajeros', 'Travelers'), validCount() ? n.value : '—'],
+      [t('Salida', 'Departure'), 'Santo Domingo'],
+      ...(perla ? [[t('Alojamiento', 'Accommodation'), bedsLabel()]] : []),
+      [t('Fecha preferida', 'Preferred date'), dateLabel(date.value)]
+    ];
+    f.querySelector('#qc-selection').innerHTML = values.map(([label,value]) => '<div><dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd></div>').join('');
   }
   function updateCounters() {
     f.querySelector('[data-n="-1"]').disabled = !validCount() || Number(n.value) <= 1;
@@ -119,13 +131,13 @@
     activity.textContent = calculated && response.activity ? activityLabel(response.activity) : '';
     activity.hidden = !activity.textContent;
     if (calculated) {
-      result.innerHTML = '<span class="qc-caption">' + t('Vuestro viaje privado', 'Your private journey') +
+      result.innerHTML = '<span class="qc-caption">' + t('Tu cotización', 'Your quote') +
         '</span><div class="qc-total"><span>' + t('Total del grupo', 'Group total') + '</span><strong>' +
-        money(response.retailPrice) + '</strong></div><dl><div><dt>' + t('Depósito', 'Deposit') +
+        money(response.retailPrice) + '</strong></div><dl><div><dt>' + t('Para confirmar · 50%', 'To confirm · 50%') +
         '</dt><dd>' + money(response.deposit) + '</dd></div><div><dt>' + t('Saldo restante', 'Remaining balance') +
         '</dt><dd>' + money(response.remainingBalance) + '</dd></div></dl>';
-      if (date.value) result.innerHTML += '<p class="qc-note">' + esc(dateLabel(date.value)) + ' · ' +
-        t('Fecha por confirmar', 'Date to be confirmed') + '</p>';
+      result.innerHTML += '<p class="qc-note qc-due">' + t('Pago del saldo hasta: ', 'Balance due by: ') +
+        (response.balanceDueDate ? '<strong>' + esc(dateLabel(response.balanceDueDate)) + '</strong>' : t('elige tu fecha preferida.', 'choose your preferred date.')) + '</p>';
       bottom(money(response.retailPrice));
     } else {
       const message = response.status === 'incomplete'
@@ -136,15 +148,17 @@
       result.innerHTML = '<strong>' + t('Hablemos de vuestro viaje', 'Let’s talk about your trip') + '</strong><p>' + message + '</p>';
       bottom(t('Precio a consultar', 'Price on request'));
     }
-    action.textContent = calculated ? t('Solicitar disponibilidad ↗', 'Request availability ↗') : t('Solicitar cotización ↗', 'Request a quote ↗');
+    action.textContent = calculated ? t('Solicitar reserva ↗', 'Request reservation ↗') : t('Solicitar cotización ↗', 'Request a quote ↗');
     contactLink(calculated ? response : null);
   }
   async function update() {
     const request = ++sequence;
     controller?.abort();
     last = null; pending = false; action.disabled = true;
-    updateCounters(); contactLink(null);
+    updateCounters(); selectionSummary(); contactLink(null);
     error.textContent = '';
+    n.setAttribute('aria-invalid', String(!validCount()));
+    date.setAttribute('aria-invalid', String(!!date.value && date.value < date.min));
     if (!validCount() || (date.value && date.value < date.min)) {
       result.setAttribute('aria-busy', 'false');
       result.classList.remove('is-updating');
@@ -208,8 +222,19 @@
     box.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     n.focus({ preventScroll: true });
   };
+  const summary = f.querySelector('.qc-summary');
   if ('ResizeObserver' in window) new ResizeObserver(() => {
-    box.style.setProperty('--booking-height', box.offsetHeight + 'px');
-  }).observe(box);
+    box.style.setProperty('--summary-height', summary.offsetHeight + 'px');
+  }).observe(summary);
+  // Hide the bottom shortcut while the primary action or mobile keyboard is in view.
+  const bar = document.querySelector('.v-bottom');
+  let actionVisible = false;
+  const syncBar = () => {
+    const keyboard = window.visualViewport && innerHeight - visualViewport.height > 140 && box.contains(document.activeElement);
+    if (bar) bar.hidden = actionVisible || !!keyboard;
+  };
+  if ('IntersectionObserver' in window) new IntersectionObserver(entries => { actionVisible = entries[0].isIntersecting; syncBar(); }, { threshold: 0 }).observe(action);
+  window.visualViewport?.addEventListener('resize', syncBar);
+  f.addEventListener('focusout', () => setTimeout(syncBar, 0));
   update();
 })();
