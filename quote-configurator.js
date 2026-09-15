@@ -42,8 +42,8 @@
     '<p id="qc-date-note" class="qc-note">' + t('Fecha preferida. Confirmaremos disponibilidad antes de reservar.', 'Preferred date. We confirm availability before booking.') +
     '</p></section></div><aside class="qc-summary" aria-labelledby="qc-summary-heading"><h3 id="qc-summary-heading">' + t('Tu viaje, a tu manera', 'Your journey, your way') + '</h3><dl id="qc-selection" class="qc-selection"></dl><div id="qc-result" class="qc-result" aria-live="polite" aria-atomic="true"></div>' +
     '<p id="qc-error" class="v-form-error" role="alert"></p><button id="qc-submit" class="v-button" type="submit">' +
-    t('Solicitar reserva', 'Request reservation') + ' ↗</button><a id="qc-wa" class="v-link" target="_blank" rel="noopener">' +
-    t('Consultar por WhatsApp', 'Ask via WhatsApp') + ' ↗</a><p class="qc-note qc-reassurance">' +
+    t('Solicitar reserva', 'Request reservation') + '</button><a id="qc-wa" class="v-link" target="_blank" rel="noopener">' +
+    t('Consultar por WhatsApp', 'Ask via WhatsApp') + '</a><p class="qc-note qc-reassurance">' +
     t('Esta solicitud no realiza ningún cobro ni confirma una reserva.', 'This request does not charge you or confirm a booking.') + '</p></aside></form>';
 
   const f = box.querySelector('form'), n = f.elements.travelers, date = f.elements.date;
@@ -148,7 +148,7 @@
       result.innerHTML = '<strong>' + t('Hablemos de vuestro viaje', 'Let’s talk about your trip') + '</strong><p>' + message + '</p>';
       bottom(t('Precio a consultar', 'Price on request'));
     }
-    action.textContent = calculated ? t('Solicitar reserva ↗', 'Request reservation ↗') : t('Solicitar cotización ↗', 'Request a quote ↗');
+    action.textContent = calculated ? t('Solicitar reserva', 'Request reservation') : t('Solicitar cotización', 'Request a quote');
     contactLink(calculated ? response : null);
   }
   async function update() {

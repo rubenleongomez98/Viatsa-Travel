@@ -93,7 +93,18 @@
   "rio-san-juan": "Lagoons, caves and beaches along the northern coast.",
   "samana": "Hidden beaches and green landscapes in Samaná."
 };
-  products.forEach(p=>{ if(descriptionsEn[p.id]) p.editorial={descriptionEn:descriptionsEn[p.id]}; });
+  const parkGalleries = {
+    'bavaro-adventure-park': { prefix: 'bavaro-park', count: 15 },
+    'sacred-river': { prefix: 'sacred-river', count: 8 }
+  };
+  products.forEach(p=>{
+    if(descriptionsEn[p.id]) p.editorial={descriptionEn:descriptionsEn[p.id]};
+    const gallery=parkGalleries[p.id];
+    if(gallery){
+      p.images=Array.from({length:gallery.count},(_,i)=>`${gallery.prefix}-${String(i+1).padStart(2,'0')}.webp`);
+      p.heroImage=p.images[0];
+    }
+  });
   const active = (type) => products.filter((p) => p.status === 'active' && (!type || p.type === type));
   const toLegacy = (type) => active(type).map((p) => [
     p.type === 'adventure' ? 'aventura' : 'experiencia', p.region, p.duration.label, p.name.es,
