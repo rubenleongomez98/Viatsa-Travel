@@ -29,6 +29,12 @@
     header.className='v-header';
     header.innerHTML=`<a class="v-skip" href="#main-content">${t('Saltar al contenido','Skip to content')}</a><nav class="v-container v-nav" aria-label="${t('Principal','Main')}"><a class="v-logo" href="/" aria-label="VIATSA Travel — ${t('Inicio','Home')}"><img src="/brand-logo-white.png" width="168" height="56" alt="VIATSA TRAVEL"></a><div class="v-navlinks" id="v-navigation">${links.map(([url,label])=>`<a href="${url}" ${location.pathname===url?'aria-current="page"':''}>${label}</a>`).join('')}</div><div class="v-langs" aria-label="${t('Idioma','Language')}">${['es','en'].map(l=>`<button type="button" data-language="${l}" aria-pressed="${lang===l}" aria-label="${l==='es'?'Español':'English'}">${l.toUpperCase()}</button>`).join('')}</div><button type="button" class="v-menu" aria-controls="v-navigation" aria-expanded="false">${t('Menú','Menu')}</button></nav>`;
     const menu=header.querySelector('.v-menu'),panel=header.querySelector('#v-navigation');
+    const pagePath=location.pathname.replace(/\.html$/,'').replace(/\/$/,'');
+    panel.querySelectorAll('a').forEach(link=>{
+      const target=new URL(link.href).pathname.replace(/\.html$/,'');
+      if(pagePath===target)link.setAttribute('aria-current','page');
+      else if(pagePath.startsWith(target+'/'))link.setAttribute('aria-current','location');
+    });
     const close=()=>{panel.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent=t('Menú','Menu')};
     menu.onclick=()=>{const open=menu.getAttribute('aria-expanded')==='true';if(open)close();else{panel.classList.add('open');menu.setAttribute('aria-expanded','true');menu.textContent=t('Cerrar','Close')}};
     header.onkeydown=e=>{if(e.key==='Escape'){close();menu.focus()}};
