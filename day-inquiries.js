@@ -1,54 +1,81 @@
-/* VIATSA supplied retail rates. Availability is confirmed privately, never assumed. */
-(()=>{
-'use strict';
-const en=localStorage.getItem('viatsa-lang')==='en',t=(es,english)=>en?english:es;
-const trips={
-'Isla Saona':{
- duration:t('8–10 horas','8–10 hours'),area:'Bayahíbe · Isla Saona',
- description:t('Un día de mar, catamarán y sabores dominicanos en Isla Saona.','A day of sea, catamaran sailing and Dominican flavors on Saona Island.'),
- places:'Parque Nacional Cotubanamá|Piscina Natural de Palmilla|Isla Saona',
- includes:t('Transporte|Catamarán|Almuerzo dominicano|Desayuno|Fotos y videos|Ron dominicano, cerveza y agua','Transportation|Catamaran|Dominican lunch|Breakfast|Photos and videos|Dominican rum, beer and water'),
- price:t('Adultos desde US$90','Adults from US$90'),
- rates:t('Adultos: US$90 desde Bayahíbe o Santo Domingo; US$95 desde Punta Cana. Niños de 3 a 10 años: US$60 desde cualquiera de esas salidas. Menores de 3 años: gratis. Tarifas por persona, sin variación por temporada o tamaño del grupo.','Adults: US$90 from Bayahíbe or Santo Domingo; US$95 from Punta Cana. Children aged 3–10: US$60 from any of these departures. Under 3: free. Per-person rates, with no seasonal or group-size adjustments.'),
- hours:t('Salida aproximada: 9:00 a. m. Regreso aproximado: entre 4:00 y 6:00 p. m. La recogida se confirma según tu ubicación.','Approximate departure: 9:00 a.m. Return: 4:00–6:00 p.m. Pickup time is confirmed for your location.'),
- departures:['Bayahíbe','Santo Domingo','Punta Cana'],payment:t('Pago completo, una vez confirmada la disponibilidad.','Full payment after availability is confirmed.')},
-'Buggies Punta Cana':{
- duration:t('4 horas aprox.','Approx. 4 hours'),area:'Punta Cana · Bávaro',
- description:t('Elige buggy, ATV o Honda para vivir una aventura por los caminos de Punta Cana.','Choose a buggy, ATV or Honda for an adventure along Punta Cana’s trails.'),places:'Playa Macao|Manantial subterráneo|Casa típica dominicana',
- includes:t('Transporte desde Punta Cana/Bávaro según ubicación|Guía turístico multilingüe|Casco|Recorrido en el vehículo elegido','Transport from Punta Cana/Bávaro depending on location|Multilingual guide|Helmet|Ride in your selected vehicle'),
- price:t('Desde US$75 por vehículo','From US$75 per vehicle'),
- rates:t('Buggy: 1–2 personas US$75; 3–4 personas US$95. ATV / 4 Wheels: 1–2 personas US$75. Honda DBL: 1–2 personas US$110; 3–4 personas US$170. Precios totales por vehículo. Almuerzo opcional: US$10 adicionales por persona. Desayuno no incluido.','Buggy: 1–2 people US$75; 3–4 people US$95. ATV / 4 Wheels: 1–2 people US$75. Honda DBL: 1–2 people US$110; 3–4 people US$170. Total rates per vehicle. Optional lunch: US$10 extra per person. Breakfast not included.'),
- hours:t('Salida según el punto de recogida. Horario de regreso pendiente de confirmar.','Departure depends on pickup point. Return time pending confirmation.'),departures:['Punta Cana','Bávaro'],payment:t('Pago completo, una vez confirmada la disponibilidad.','Full payment after availability is confirmed.')},
-'Bávaro Adventure Park':{
- duration:t('1 día · 8 horas aprox.','1 day · approx. 8 hours'),area:'Punta Cana · Bávaro · Cap Cana',
- description:t('Una jornada de aventura entre buggies, caballos, tirolinas, cenotes y piscinas naturales.','A day of adventure with buggies, horses, ziplines, cenotes and natural pools.'),places:'Blue Lagoon Cenote|Sacred River|Jungle River',
- includes:t('Buggy VIP|Tour de caballos|Zip Line Mega Splash|Jungle River|Cenote Blue Lagoon|Sacred River|Piscina con cascada|Transporte ida y vuelta|Almuerzo|Bebidas','VIP Buggy|Horseback tour|Zip Line Mega Splash|Jungle River|Blue Lagoon Cenote|Sacred River|Waterfall pool|Round-trip transport|Lunch|Drinks'),
- price:t('US$179 por adulto','US$179 per adult'),rates:t('Tarifa VIATSA: US$179 por adulto. Sin variaciones por cantidad o temporada. Desayuno no incluido. Tarifas y restricciones para menores: consultar.','VIATSA rate: US$179 per adult. No group-size or seasonal adjustments. Breakfast not included. Ask about child rates and restrictions.'),
- hours:t('Horario del parque: lunes a domingo, 8:30 a. m.–6:00 p. m.; primeras actividades a las 9:00 a. m. El horario del traslado y del paquete se confirma por mensaje.','Park hours: Monday–Sunday, 8:30 a.m.–6:00 p.m.; first activities at 9:00 a.m. Transfer and package times are confirmed by message.'),
- departures:['Punta Cana','Cap Cana','Bávaro'],payment:t('Pago en persona al entrar al parque, previa coordinación con VIATSA. Esta solicitud no cobra por Stripe.','Pay in person at park entry after arranging your visit with VIATSA. This request does not charge through Stripe.')},
-'Cenote con Fiesta y Cena en Sacred River':{
- duration:t('3½–4 horas · nocturna','3½–4 hours · evening'),area:'Punta Cana · Bávaro · Cap Cana',
- description:t('Sacred River de noche: cenotes, cena, barra libre y fiesta en la jungla.','Sacred River at night: cenotes, dinner, open bar and a jungle party.'),places:'Sacred River|Blue Lagoon Cenote|Piscina con cascada',
- includes:t('Transporte compartido ida y vuelta|Cena con barra libre|Música en vivo y fiesta en la jungla|Visita a cenotes y piscina natural|Cóctel junto a la piscina con cascada|Equipo e instrucciones de seguridad|Guías bilingües','Shared round-trip transport|Dinner with open bar|Live music and jungle party|Cenotes and natural pool|Cocktail by the waterfall pool|Equipment and safety instructions|Bilingual guides'),
- price:t('US$245 por adulto','US$245 per adult'),rates:t('Tarifa VIATSA: US$245 por adulto. No incluye fotos profesionales, souvenirs, propinas, casilleros ni consumos adicionales fuera del paquete. Edad mínima y participación de menores: pendientes de confirmar.','VIATSA rate: US$245 per adult. Professional photos, souvenirs, tips, lockers and consumption outside the package are not included. Minimum age and participation of minors: pending confirmation.'),
- hours:t('Experiencia nocturna. Hora de inicio, regreso y recogida pendientes de confirmar por mensajería privada. Cupos sujetos a disponibilidad del proveedor.','Evening experience. Start, return and pickup times are confirmed by private message. Places are subject to provider availability.'),
- departures:['Punta Cana','Bávaro','Cap Cana'],payment:t('Pago completo, una vez confirmada la disponibilidad.','Full payment after availability is confirmed.')}
-};
-Object.entries(trips).forEach(([name,d])=>{
- const entry=['experiencia','este',d.duration,name,d.area,d.description,d.places,d.includes,d.price,d.rates];
- const old=P.find(p=>p[3]===name);if(old)old.splice(0,old.length,...entry);else P.push(entry);
-});
-const style=document.createElement('style');style.textContent='.day-request{border-top:1px solid #60604255;margin-top:26px;padding-top:20px}.day-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.day-request label{display:grid;gap:7px;font-size:14px}.day-request input,.day-request select{width:100%;min-height:48px;font:inherit;padding:10px;border:1px solid #60604288;background:#fff8ed;color:#29291f}.day-request button,.day-request .wa{display:inline-block;min-height:48px;border:0;margin-top:18px;cursor:pointer}.day-request :focus-visible{outline:3px solid #606042;outline-offset:3px}.day-request .day-status{line-height:1.6}.day-request [hidden]{display:none}.day-consent{display:flex!important;align-items:flex-start;margin-top:18px;line-height:1.5}.day-consent input{width:22px;min-height:22px;flex-shrink:0}.day-fields small{line-height:1.5}@media(max-width:600px){.day-fields{grid-template-columns:1fr}}';document.head.append(style);
-const previousOpen=openP;
-openP=function(p){
- const d=trips[p[3]];if(!d)return previousOpen(p);
- const gallery=experiencePhotos[p[3]];
- D.innerHTML=`<span class="eyebrow">${d.duration} · ${d.area}</span><h2>${p[3]}</h2><p class="lead">${d.description}</p>${gallery?`<div class="trip-gallery">${Array.from({length:gallery.count},(_,i)=>photoFrame(gallery,p[3],i)).join('')}</div>`:''}<h3>${t('Tarifas y condiciones','Rates and conditions')}</h3><p class="lead">${d.rates}</p><h3>${t('Incluye','Included')}</h3><ul>${d.includes.split('|').map(x=>`<li>${x}</li>`).join('')}</ul><div class="note">${t('Operación: lunes a domingo, sujeta a confirmación.','Operation: Monday–Sunday, subject to confirmation.')} ${d.hours}<br><br>${d.payment}<br>${t('Anticipación mínima para reservar: pendiente de confirmar.','Minimum booking notice: pending confirmation.')}</div><form class="day-request"><h3>${t('Consultar disponibilidad por WhatsApp','Check availability on WhatsApp')}</h3><p>${t('Dinos cuándo quieres ir. VIATSA confirmará los cupos, el traslado y las condiciones por mensaje privado. Esta consulta no confirma una reserva ni realiza ningún cobro.','Tell us when you would like to go. VIATSA will confirm places, transfers and conditions by private message. This inquiry does not confirm a booking or charge you.')}</p><div class="day-fields"><label>${t('Fecha deseada *','Preferred date *')}<input type="date" name="date" required></label><label>${t('Adultos *','Adults *')}<input type="number" name="adults" min="1" step="1" required></label><label>${t('Niños / menores','Children / minors')}<input type="number" name="children" min="0" step="1" value="0"></label><label>${t('Edades de los menores (si viajan)','Ages of minors (if traveling)')}<input name="ages" maxlength="100"></label><label>${t('Zona de recogida *','Pickup area *')}<select name="area" required><option value="">${t('Selecciona','Select')}</option>${d.departures.map(x=>`<option>${x}</option>`).join('')}<option>${t('Otra zona: consultar suplemento','Other area: ask about surcharge')}</option></select></label><label>${t('Hotel o punto de recogida *','Hotel or pickup point *')}<input name="hotel" required maxlength="200"></label>${p[3]==='Buggies Punta Cana'?`<label>${t('Vehículo *','Vehicle *')}<select name="vehicle" required><option value="">${t('Selecciona','Select')}</option><option>Buggy · 1–2 · US$75</option><option>Buggy · 3–4 · US$95</option><option>ATV · 1–2 · US$75</option><option>Honda DBL · 1–2 · US$110</option><option>Honda DBL · 3–4 · US$170</option></select><small>${t('La distribución del grupo en vehículos se coordina por mensaje.','Vehicle allocation for your group is arranged by message.')}</small></label><label>${t('Almuerzos opcionales (+US$10 cada uno)','Optional lunches (+US$10 each)')}<input type="number" name="lunches" min="0" step="1" value="0"></label>`:''}</div><label class="day-consent"><input type="checkbox" name="privacy" required><span>${t('Acepto el uso de estos datos para atender mi consulta según la','I agree to the use of these details to respond to my inquiry under the')} <a href="privacidad.html" target="_blank" rel="noopener">${t('Política de privacidad','Privacy Policy')}</a>.</span></label><button class="wa" type="submit">${t('Preparar consulta','Prepare inquiry')}</button><div class="day-result" hidden><p class="day-status" role="status">${t('Tu consulta está lista. Abre WhatsApp, revisa el mensaje y pulsa Enviar allí. Todavía no se ha enviado.','Your inquiry is ready. Open WhatsApp, review the message and press Send there. It has not been sent yet.')}</p><a class="wa day-send" target="_blank" rel="noopener">${t('Consultar disponibilidad por WhatsApp','Check availability on WhatsApp')}</a></div></form>`;
- const form=D.querySelector('form'),date=form.elements.date,now=new Date();date.min=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
- form.addEventListener('input',()=>{form.elements.ages.required=Number(form.elements.children.value)>0;form.querySelector('.day-result').hidden=true});
- form.addEventListener('change',()=>{form.querySelector('.day-result').hidden=true});
- form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const f=new FormData(form);const lines=[t('Hola VIATSA, quiero consultar disponibilidad.','Hello VIATSA, I would like to check availability.'),p[3],`${t('Fecha','Date')}: ${f.get('date')}`,`${t('Adultos','Adults')}: ${f.get('adults')}`,`${t('Menores','Minors')}: ${f.get('children')||0}`,`${t('Edades','Ages')}: ${f.get('ages')||'—'}`,`${t('Zona','Area')}: ${f.get('area')}`,`${t('Hotel / recogida','Hotel / pickup')}: ${f.get('hotel')}`,d.rates,d.payment];if(f.get('vehicle'))lines.push(`${t('Vehículo','Vehicle')}: ${f.get('vehicle')}`,`${t('Almuerzos opcionales','Optional lunches')}: ${f.get('lunches')||0}`);lines.push(t('Entiendo que la reserva y el horario requieren confirmación.','I understand that the booking and schedule require confirmation.'));form.querySelector('.day-send').href='https://wa.me/18099723232?text='+encodeURIComponent(lines.join('\n'));form.querySelector('.day-result').hidden=false;});
- M.showModal();
-};
-draw();
+/* Customer inquiries for day experiences. Prices come only from data/catalog.js. */
+(() => {
+  'use strict';
+  const english = localStorage.getItem('viatsa-lang') === 'en';
+  const t = (es, en) => english ? en : es;
+  const phone = VIATSA_CATALOG.contact.whatsapp.replace(/\D/g, '');
+  const products = VIATSA_CATALOG.active('experience');
+  const byName = name => products.find(product => product.name.es === name);
+  const money = value => `US$${Number(value).toLocaleString('en-US')}`;
+  const rateFor = (product, travelers) => product.pricingConfig.tiers?.find(tier => travelers >= tier.min && (tier.max == null || travelers <= tier.max))?.perPerson ?? product.pricingConfig.perPerson ?? null;
+  const tierText = product => {
+    const pricing = product.pricingConfig;
+    if (pricing.tiers) return pricing.tiers.map(tier => `${tier.max == null ? `${tier.min}+` : tier.min === tier.max ? tier.min : `${tier.min}–${tier.max}`} ${t('personas', 'people')}: ${money(tier.perPerson)} p/p`).join(' · ');
+    if (pricing.departureRates) return Object.entries(pricing.departureRates).map(([place, rates]) => `${place}: ${t('adultos', 'adults')} ${money(rates.adult)} · ${t('niños', 'children')} ${money(rates.child)}`).join(' · ');
+    if (product.id === 'buggies-punta-cana') return 'Buggy 1–2: US$75 · Buggy familiar 3–4: US$95 · ATV 1–2: US$75 · Honda DBL 1–2: US$110 · Honda familiar 3–4: US$170';
+    return pricing.perPerson ? `${money(pricing.perPerson)} p/p` : pricing.display;
+  };
+  const departureOptions = product => {
+    if (product.pricingConfig.departureRates) return Object.keys(product.pricingConfig.departureRates);
+    if (product.id === 'buggies-punta-cana') return ['Punta Cana', 'Bávaro'];
+    if (['bavaro-adventure-park', 'sacred-river'].includes(product.id)) return ['Punta Cana', 'Bávaro', 'Cap Cana'];
+    return ['Santo Domingo'];
+  };
+  const whatsapp = (product, lines = []) => `https://wa.me/${phone}?text=${encodeURIComponent([t('Hola VIATSA, quiero cotizar esta experiencia:', 'Hello VIATSA, I would like a quote for this experience:'), product.name.es, ...lines].join('\n'))}`;
+
+  const style = document.createElement('style');
+  style.textContent = '.day-rates{padding:18px 0;border-block:1px solid #60604244;line-height:1.7}.day-group-link{display:inline-block;margin:12px 0 4px}.day-request{border-top:1px solid #60604255;margin-top:26px;padding-top:20px}.day-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.day-request label{display:grid;gap:7px;font-size:14px}.day-request input,.day-request select{width:100%;min-height:48px;font:inherit;padding:10px;border:1px solid #60604288;background:#fff8ed;color:#29291f}.day-request button,.day-request .wa{display:inline-block;min-height:48px;border:0;margin-top:18px;cursor:pointer}.day-request :focus-visible{outline:3px solid #606042;outline-offset:3px}.day-quote{margin:18px 0 0;padding:16px;background:#B2B29055;line-height:1.55}.day-request [hidden]{display:none}.day-consent{display:flex!important;align-items:flex-start;margin-top:18px;line-height:1.5}.day-consent input{width:22px;min-height:22px;flex-shrink:0}@media(max-width:600px){.day-fields{grid-template-columns:1fr}}';
+  document.head.append(style);
+
+  const previousOpen = openP;
+  openP = function (legacy) {
+    const product = byName(legacy[3]);
+    if (!product) return previousOpen(legacy);
+    const gallery = experiencePhotos[product.name.es];
+    const places = product.destinations.map(place => `<li>${place}</li>`).join('');
+    const included = product.included.map(item => `<li>${item}</li>`).join('');
+    const options = departureOptions(product);
+    const saona = product.id === 'isla-saona';
+    const buggies = product.id === 'buggies-punta-cana';
+    D.innerHTML = `<span class="eyebrow">${product.duration.label} · ${legacy[4]}</span><h2>${product.name.es}</h2><p class="lead">${product.shortDescription}</p>${gallery ? `<div class="trip-gallery">${Array.from({ length: gallery.count }, (_, index) => photoFrame(gallery, product.name.es, index)).join('')}</div>` : ''}<h3>${t('Tarifas por cantidad', 'Rates by group size')}</h3><p class="day-rates">${tierText(product)}</p><a class="wa day-group-link" target="_blank" rel="noopener" href="${whatsapp(product)}">${t('Cotizar grupo por WhatsApp', 'Quote a group via WhatsApp')}</a><div class="cols"><div><h4>${t('Lugares de la ruta', 'Places')}</h4><ul>${places}</ul></div><div><h4>${t('Incluye', 'Included')}</h4><ul>${included}</ul></div></div><form class="day-request"><h3>${t('Prepara tu consulta', 'Prepare your inquiry')}</h3><p>${t('El precio se actualiza según la cantidad indicada. VIATSA confirmará disponibilidad antes de reservar.', 'The price updates for your group size. VIATSA confirms availability before booking.')}</p><div class="day-fields"><label>${t('Fecha deseada *', 'Preferred date *')}<input type="date" name="date" required></label><label>${t('Adultos / viajeros *', 'Adults / travelers *')}<input type="number" name="adults" min="1" step="1" value="${product.minimumGuests || 1}" required></label>${saona ? `<label>${t('Niños de 3 a 10 años', 'Children aged 3–10')}<input type="number" name="children" min="0" step="1" value="0"></label>` : ''}<label>${t('Zona de recogida *', 'Pickup area *')}<select name="area" required><option value="">${t('Selecciona', 'Select')}</option>${options.map(option => `<option>${option}</option>`).join('')}<option>${t('Otra zona: consultar', 'Other area: ask us')}</option></select></label>${buggies ? `<label>${t('Vehículo *', 'Vehicle *')}<select name="vehicle" required><option value="">${t('Selecciona', 'Select')}</option><option value="75">Buggy · 1–2 · US$75</option><option value="95">Buggy familiar · 3–4 · US$95</option><option value="75">ATV / 4 Wheels · 1–2 · US$75</option><option value="110">Honda DBL · 1–2 · US$110</option><option value="170">Honda familiar · 3–4 · US$170</option></select></label>` : ''}</div><div class="day-quote" role="status"></div><label class="day-consent"><input type="checkbox" name="privacy" required><span>${t('Acepto el uso de estos datos según la', 'I agree to the use of these details under the')} <a href="/privacidad.html" target="_blank" rel="noopener">${t('Política de privacidad', 'Privacy Policy')}</a>.</span></label><button class="wa" type="submit">${t('Preparar consulta por WhatsApp', 'Prepare WhatsApp inquiry')}</button><div class="day-result" hidden><p>${t('Revisa el mensaje y pulsa Enviar en WhatsApp. La consulta todavía no se ha enviado.', 'Review the message and press Send in WhatsApp. The inquiry has not been sent yet.')}</p><a class="wa day-send" target="_blank" rel="noopener">${t('Abrir WhatsApp', 'Open WhatsApp')}</a></div></form>`;
+    const form = D.querySelector('form');
+    const date = form.elements.date;
+    const now = new Date();
+    date.min = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    const refresh = () => {
+      const adults = Number(form.elements.adults.value) || 0;
+      const children = Number(form.elements.children?.value) || 0;
+      const area = form.elements.area.value;
+      let total = null;
+      let detail = '';
+      if (buggies) {
+        total = Number(form.elements.vehicle.value) || null;
+        detail = total ? t('Precio total del vehículo seleccionado.', 'Total price for the selected vehicle.') : t('Selecciona un vehículo para ver el precio.', 'Select a vehicle to see the price.');
+      } else if (saona) {
+        const rates = product.pricingConfig.departureRates[area];
+        if (rates) { total = adults * rates.adult + children * rates.child; detail = `${adults} × ${money(rates.adult)}${children ? ` + ${children} × ${money(rates.child)}` : ''}`; }
+        else detail = t('Selecciona la salida para calcular.', 'Select the departure point to calculate.');
+      } else {
+        const rate = rateFor(product, adults);
+        if (rate) { total = rate * adults; detail = `${adults} × ${money(rate)} p/p`; }
+        else detail = `${t('Mínimo', 'Minimum')}: ${product.minimumGuests || 1} ${t('viajeros.', 'travelers.')}`;
+      }
+      form.querySelector('.day-quote').innerHTML = total == null ? `<strong>${t('Precio a cotizar por WhatsApp', 'Price via WhatsApp quote')}</strong><br>${detail}` : `<strong>${t('Total estimado', 'Estimated total')}: ${money(total)}</strong><br>${detail}`;
+      form.querySelector('.day-result').hidden = true;
+      return { adults, children, area, total };
+    };
+    form.addEventListener('input', refresh);
+    form.addEventListener('change', refresh);
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const quote = refresh();
+      const lines = [`${t('Fecha', 'Date')}: ${date.value}`, `${t('Viajeros adultos', 'Adult travelers')}: ${quote.adults}`, ...(saona ? [`${t('Niños', 'Children')}: ${quote.children}`] : []), `${t('Recogida', 'Pickup')}: ${quote.area}`, ...(buggies ? [`${t('Vehículo', 'Vehicle')}: ${form.elements.vehicle.selectedOptions[0].textContent}`] : []), quote.total == null ? t('Solicito una cotización personalizada.', 'I need a custom quote.') : `${t('Total mostrado', 'Displayed total')}: ${money(quote.total)}`];
+      form.querySelector('.day-send').href = whatsapp(product, lines);
+      form.querySelector('.day-result').hidden = false;
+    });
+    refresh();
+    M.showModal();
+  };
+  draw();
 })();

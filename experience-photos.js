@@ -2,10 +2,8 @@ const experiencePhotos={
   'Isla Saona':{src:'saona-strip.webp',count:4},
   'Buggies Punta Cana':{src:'buggies-strip.webp',count:4},
   'Recorrido por Río San Juan':{src:'rio-strip.webp',count:2},
-  'Recorrido por Samaná':{src:'samana-strip-drive.webp',count:4},
   'Río Partido, Salcedo':{src:'rio-partido-strip.webp',count:4},
   'Cascadas Vírgenes':{src:'cascadas-virgenes-strip.webp',count:4},
-  'Cascadas San Cristóbal':{src:'cascadas-virgenes-strip.webp',count:4},
   'Recorrido por Santo Domingo':{src:'santo-domingo-strip.webp',count:2}
 };
 // Individual galleries use the central catalog; existing photo strips stay unchanged.
